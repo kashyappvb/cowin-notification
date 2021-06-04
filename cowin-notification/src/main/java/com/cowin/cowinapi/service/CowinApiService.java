@@ -64,6 +64,7 @@ public class CowinApiService {
             List<Session> avaialbleVaccineList =  responseEntity.getBody().getSessions().stream()
             		.filter(session -> session.getAvailableCapacity()>0).collect(Collectors.toList());
             
+            
             LOGGER.info("Eligible Vaccination with Availabilityu > 0 : {}",avaialbleVaccineList);
             
             for(Session session : avaialbleVaccineList) {
@@ -73,6 +74,7 @@ public class CowinApiService {
                 .append("Vaccination Information :\n\n")
                 .append("Date : ").append(session.getDate()).append("\n")
                 .append("Center ID : ").append(session.getCenterId()).append("\n")
+                .append("Age Group : ").append(session.getMinAgeLimit()).append("\n")
                 .append("Name : ").append(session.getName()).append("\n")
                 .append("Address : ").append(session.getAddress()).append("\n")
                 .append("District : ").append(session.getDistrictName()).append("\n")
@@ -83,10 +85,13 @@ public class CowinApiService {
                 .append("Available Capacity Dose 2 : ").append(session.getAvailableCapacityDose2()).append("\n")
                 .append("Fee type : ").append(session.getFeeType()).append("\n")
                 .append("Fee : ").append(session.getFee()).append("\n")
+                .append("Slots :").append(session.getSlots()).append("\n")
                 .append("\n")
                 .append("Book your Vaccination at https://www.cowin.gov.in/ and get vaccinated!");
-            
+            	
+            	
             	cowinApiTelegramService.feedDataToBot(finalMessageToBot.toString());
+            	
             }
             
             
