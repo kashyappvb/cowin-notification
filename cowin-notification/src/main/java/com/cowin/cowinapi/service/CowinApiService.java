@@ -4,6 +4,8 @@ package com.cowin.cowinapi.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -22,6 +24,8 @@ import com.cowin.telegramapi.service.CowinApiTelegramService;
 @Service
 public class CowinApiService {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
 	@Value("${cowin-base-url}")
 	private String cowinBaseUrl;
 	
@@ -55,12 +59,12 @@ public class CowinApiService {
         );
 		
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            System.out.println("response received");
-            System.out.println(responseEntity.getBody());
+            
+			LOGGER.info("COWIN RESPONSE : {}", responseEntity);
             List<Session> avaialbleVaccineList =  responseEntity.getBody().getSessions().stream()
             		.filter(session -> session.getAvailableCapacity()>0).collect(Collectors.toList());
             
-            
+            LOGGER.info("Eligible Vaccination with Availabilityu > 0 : {}",avaialbleVaccineList);
             
             for(Session session : avaialbleVaccineList) {
             	StringBuilder finalMessageToBot = new StringBuilder();

@@ -1,5 +1,7 @@
 package com.cowin.telegramapi.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class CowinApiTelegramService {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
 	@Value("${telegram-bot-base-url}")
 	private String telegramBotBaseUrl;
 	
@@ -24,8 +28,10 @@ public class CowinApiTelegramService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public Object feedDataToBot(String data)
+	public void feedDataToBot(String data)
 	{
+		LOGGER.info("Data pushing to BOT : {}",data);
+		
 		StringBuilder telegramFinalUrl = new StringBuilder(); 
 		telegramFinalUrl
 			.append(telegramBotBaseUrl)
@@ -35,9 +41,9 @@ public class CowinApiTelegramService {
 			.append(telegramChannelName)
 			.append("&text=")
 			.append(data);
-		System.out.println(telegramFinalUrl);
+		
 		ResponseEntity<Object> responseEntity = restTemplate.getForEntity(telegramFinalUrl.toString(), Object.class);
-		System.out.println(responseEntity);
-		return null;
+		
+		LOGGER.info("Response from BOT : {}",responseEntity);
 	}
 }

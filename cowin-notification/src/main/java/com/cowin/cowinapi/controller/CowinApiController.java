@@ -1,10 +1,10 @@
 package com.cowin.cowinapi.controller;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +18,8 @@ import com.cowin.cowinapi.service.CowinApiService;
 @RestController
 public class CowinApiController {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private CowinApiService cowinApiService;
 	
@@ -27,6 +29,7 @@ public class CowinApiController {
 				@RequestParam(value="date") String date
 			)
 	{
+		LOGGER.info("District ID :{}, Date :{} ",districtId,date);
 		return cowinApiService.getVaccineAvailabilityByDistrict(districtId, date);
 		
 	}
@@ -38,10 +41,10 @@ public class CowinApiController {
 	}
 	
 	//Runs every 5 minutes
-	@Scheduled(cron="0 0/5 * * * ?")
+	@Scheduled(cron="0 0/1 * * * ?")
 	public void callVaccinationAvailabilityCron()
 	{
-		System.out.println("Running from Cron.....");
+		LOGGER.info("Running from Cron...");
 		String districtId = "266";
 		
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
