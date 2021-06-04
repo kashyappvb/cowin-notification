@@ -70,7 +70,7 @@ public class CowinApiService {
             	StringBuilder finalMessageToBot = new StringBuilder();
             	
             	finalMessageToBot
-                .append("Vaccination Information :\n")
+                .append("Vaccination Information :\n\n")
                 .append("Date : ").append(session.getDate()).append("\n")
                 .append("Center ID : ").append(session.getCenterId()).append("\n")
                 .append("Name : ").append(session.getName()).append("\n")
@@ -82,15 +82,16 @@ public class CowinApiService {
                 .append("Available Capacity Dose 1 : ").append(session.getAvailableCapacityDose1()).append("\n")
                 .append("Available Capacity Dose 2 : ").append(session.getAvailableCapacityDose2()).append("\n")
                 .append("Fee type : ").append(session.getFeeType()).append("\n")
-                .append("Fee : ").append(session.getFee());
+                .append("Fee : ").append(session.getFee()).append("\n")
+                .append("\n")
+                .append("Book your Vaccination at https://www.cowin.gov.in/ and get vaccinated!");
             
             	cowinApiTelegramService.feedDataToBot(finalMessageToBot.toString());
             }
             
             
         } else {
-            System.out.println("error occurred");
-            System.out.println(responseEntity.getStatusCode());
+        	LOGGER.error("Error Occured : {}",responseEntity);
         }
 		
 		return responseEntity;
