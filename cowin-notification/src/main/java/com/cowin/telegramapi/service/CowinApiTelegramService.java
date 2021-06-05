@@ -30,7 +30,6 @@ public class CowinApiTelegramService {
 	
 	public void feedDataToBot(String data)
 	{
-		LOGGER.info("Data pushing to BOT : {}",data);
 		
 		StringBuilder telegramFinalUrl = new StringBuilder(); 
 		telegramFinalUrl

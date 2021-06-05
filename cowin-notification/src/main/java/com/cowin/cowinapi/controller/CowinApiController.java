@@ -41,7 +41,7 @@ public class CowinApiController {
 	}
 	
 	//Runs every 5 minutes
-	@Scheduled(cron="0 0/5 * * * ?")
+	@Scheduled(cron="0 0/1 * * * ?")
 	public void callVaccinationAvailabilityCron()
 	{
 		LOGGER.info("Running from Cron...");

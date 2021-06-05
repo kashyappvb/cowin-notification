@@ -50,6 +50,7 @@ public class Session {
 	private Integer minAgeLimit;
 	private String vaccine;
 	private List<String> slots = null;
+	
 	public Integer getCenterId() {
 		return centerId;
 	}
@@ -175,6 +176,42 @@ public class Session {
 	}
 	public void setSlots(List<String> slots) {
 		this.slots = slots;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((centerId == null) ? 0 : centerId.hashCode());
+		result = prime * result + ((sessionId == null) ? 0 : sessionId.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Session)) {
+			return false;
+		}
+		Session other = (Session) obj;
+		if (centerId == null) {
+			if (other.centerId != null) {
+				return false;
+			}
+		} else if (!centerId.equals(other.centerId)) {
+			return false;
+		}
+		if (sessionId == null) {
+			if (other.sessionId != null) {
+				return false;
+			}
+		} else if (!sessionId.equals(other.sessionId)) {
+			return false;
+		}
+		return true;
 	}
 	@Override
 	public String toString() {

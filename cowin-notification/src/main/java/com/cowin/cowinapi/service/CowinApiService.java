@@ -1,6 +1,7 @@
 package com.cowin.cowinapi.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,8 @@ public class CowinApiService {
 	@Autowired
 	private CowinApiTelegramService cowinApiTelegramService;
 	
+	List<Session> sessionsPushedToTelegram = new ArrayList<Session>();
+	
 	public ResponseEntity<CowinApiResponse> getVaccineAvailabilityByDistrict(String districtId,String date)
 	{
 		String finalUrl = cowinBaseUrl + findByDistrictContextPath;
@@ -62,10 +65,9 @@ public class CowinApiService {
             
 			LOGGER.info("COWIN RESPONSE : {}", responseEntity);
             List<Session> avaialbleVaccineList =  responseEntity.getBody().getSessions().stream()
-            		.filter(session -> session.getAvailableCapacity()>0).collect(Collectors.toList());
-            
-            
-            LOGGER.info("Eligible Vaccination with Availabilityu > 0 : {}",avaialbleVaccineList);
+            		.filter(session -> session.getAvailableCapacity()>0 && sessionsPushedToTelegram.contains(session)).collect(Collectors.toList());
+            		
+            LOGGER.info("Eligible Vaccination with Availability, Size {} : {}",avaialbleVaccineList.size(),avaialbleVaccineList);
             
             for(Session session : avaialbleVaccineList) {
             	StringBuilder finalMessageToBot = new StringBuilder();
@@ -87,8 +89,9 @@ public class CowinApiService {
                 .append("Fee : ").append(session.getFee()).append("\n")
                 .append("Slots :").append(session.getSlots()).append("\n")
                 .append("\n")
-                .append("Book your Vaccination at https://www.cowin.gov.in/ and get vaccinated!");
+                .append("Book your Vaccination at https://www.cowin.gov.in/ and get vaccinated! \n");
             	
+            	sessionsPushedToTelegram.add(session);
             	
             	cowinApiTelegramService.feedDataToBot(finalMessageToBot.toString());
             	
@@ -98,7 +101,7 @@ public class CowinApiService {
         } else {
         	LOGGER.error("Error Occured : {}",responseEntity);
         }
-		
+		LOGGER.info("Sessions pushed till now :{}",sessionsPushedToTelegram);
 		return responseEntity;
 	}
 }
