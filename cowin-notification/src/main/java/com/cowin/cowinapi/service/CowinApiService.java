@@ -65,7 +65,7 @@ public class CowinApiService {
             
 			LOGGER.info("COWIN RESPONSE : {}", responseEntity);
             List<Session> avaialbleVaccineList =  responseEntity.getBody().getSessions().stream()
-            		.filter(session -> session.getAvailableCapacity()>0 && sessionsPushedToTelegram.contains(session)).collect(Collectors.toList());
+            		.filter(session -> session.getAvailableCapacity()>0 && !sessionsPushedToTelegram.contains(session)).collect(Collectors.toList());
             		
             LOGGER.info("Eligible Vaccination with Availability, Size {} : {}",avaialbleVaccineList.size(),avaialbleVaccineList);
             
@@ -104,4 +104,5 @@ public class CowinApiService {
 		LOGGER.info("Sessions pushed till now :{}",sessionsPushedToTelegram);
 		return responseEntity;
 	}
+	
 }

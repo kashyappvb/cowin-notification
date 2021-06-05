@@ -47,11 +47,13 @@ public class CowinApiController {
 		LOGGER.info("Running from Cron...");
 		String districtId = "266";
 		
+		//String districtIdArray[] = {"265","276"};
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	    LocalDate localDate = LocalDate.now().plusDays(1);
 	    String date = localDate.format(formatter);
 	    
-	    getVaccineAvailabilityByDistrict(districtId,date);
+	    //for(String districtId : districtIdArray)
+	    	getVaccineAvailabilityByDistrict(districtId,date);
 	    
 	}
 }
